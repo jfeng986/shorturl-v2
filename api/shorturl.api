@@ -1,0 +1,31 @@
+type ShortenRequest {
+	OriginalURL string `json:"original_url"`
+	CustomAlias string `json:"custom_alias"` // optional
+}
+
+type ShortenResponse {
+	ShortURL string `json:"short_url"`
+}
+
+type GetOriginalURLRequest {
+	ShortURL string `json:"short_url"`
+}
+
+type GetOriginalURLResponse {
+	OriginalURL string `json:"original_url"`
+}
+
+type Empty {
+}
+
+service ShortURL {
+	@handler GetShortURL
+	post /shorten(ShortenRequest) returns (ShortenResponse)
+
+	@handler GetOriginalURL
+	post /geturl(GetOriginalURLRequest) returns (GetOriginalURLResponse)
+
+	@handler Redirect
+	get /:alias(Empty) returns (Empty)
+
+}

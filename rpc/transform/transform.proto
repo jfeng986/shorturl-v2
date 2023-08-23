@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package transform;
+
+option go_package = "./transform";
+
+message ShortenRequest {
+    string OriginalURL = 1;
+    string CustomAlias = 2;
+}
+
+message ShortenResponse {
+    string ShortURL = 1;
+}
+
+message GetOriginalURLRequest {
+    string ShortURL = 1;
+}
+
+message GetOriginalURLResponse {
+    string OriginalURL = 1;
+}
+
+message Empty {
+}
+
+service transformer {
+    rpc GetShortURL(ShortenRequest) returns(ShortenResponse);
+    rpc GetOriginalURL(GetOriginalURLRequest) returns(GetOriginalURLResponse);
+    rpc Redirect(Empty) returns(Empty);
+}
