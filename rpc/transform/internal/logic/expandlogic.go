@@ -2,7 +2,10 @@ package logic
 
 import (
 	"context"
+	"errors"
+	"log"
 
+	"shorturl-v2/rpc/transform/internal/cache"
 	"shorturl-v2/rpc/transform/internal/svc"
 	"shorturl-v2/rpc/transform/transform"
 
@@ -24,7 +27,16 @@ func NewExpandLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ExpandLogi
 }
 
 func (l *ExpandLogic) Expand(in *transform.ExpandRequest) (*transform.ExpandResponse, error) {
-	// todo: add your logic here and delete this line
+	shortURL := in.ShortURL
 
-	return &transform.ExpandResponse{}, nil
+	originalUrl, ok := cache.Get([]byte(shortURL))
+	if ok {
+		log.Println(originalUrl)
+		resp := &transform.ExpandResponse{
+			OriginalURL: originalUrl,
+		}
+		return resp, nil
+	} else {
+		return nil, errors.New("short url not found")
+	}
 }
