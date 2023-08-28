@@ -17,3 +17,11 @@ type ExpandRequest struct {
 type ExpandResponse struct {
 	OriginalURL string `json:"original_url"`
 }
+
+type RedirectRequest struct {
+	ShortURL string `path:"short_url"`
+}
+
+type RedirectResponse struct {
+	OriginalURL string `json:"original_url"`
+}

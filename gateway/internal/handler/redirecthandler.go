@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"log"
 	"net/http"
 
 	"shorturl-v2/gateway/internal/logic"
@@ -10,15 +11,15 @@ import (
 	"github.com/zeromicro/go-zero/rest/httpx"
 )
 
-func ExpandHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func RedirectHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.ExpandRequest
-		if err := httpx.Parse(r, &req); err != nil {
-			httpx.ErrorCtx(r.Context(), w, err)
-			return
-		}
-		l := logic.NewExpandLogic(r.Context(), svcCtx)
-		resp, err := l.Expand(&req)
+		var req types.RedirectRequest
+		alias := r.URL.Path[1:]
+		req.ShortURL = "http://127.0.0.1:30000/" + alias
+		log.Println("req.ShortURL:", req.ShortURL)
+
+		l := logic.NewRedirectLogic(r.Context(), svcCtx)
+		resp, err := l.Redirect(&req)
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {

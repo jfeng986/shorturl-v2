@@ -15,10 +15,21 @@ type ExpandResponse {
 	OriginalURL string `json:"original_url"`
 }
 
+type RedirectRequest {
+	ShortURL string `path:"short_url"`
+}
+
+type RedirectResponse {
+	OriginalURL string `json:"original_url"`
+}
+
 service Gateway {
 	@handler Shorten
 	post /shorten(ShortenRequest) returns (ShortenResponse)
 
 	@handler Expand
 	post /expand(ExpandRequest) returns (ExpandResponse)
+
+	@handler Redirect
+	get /:alias(RedirectRequest) returns (RedirectResponse)
 }
