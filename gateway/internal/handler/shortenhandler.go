@@ -3,22 +3,23 @@ package handler
 import (
 	"net/http"
 
+	"shorturl-v2/gateway/internal/logic"
+	"shorturl-v2/gateway/internal/svc"
+	"shorturl-v2/gateway/internal/types"
+
 	"github.com/zeromicro/go-zero/rest/httpx"
-	"shorturl-v2/api/internal/logic"
-	"shorturl-v2/api/internal/svc"
-	"shorturl-v2/api/internal/types"
 )
 
-func GetOriginalURLHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func ShortenHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.GetOriginalURLRequest
+		var req types.ShortenRequest
 		if err := httpx.Parse(r, &req); err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
 
-		l := logic.NewGetOriginalURLLogic(r.Context(), svcCtx)
-		resp, err := l.GetOriginalURL(&req)
+		l := logic.NewShortenLogic(r.Context(), svcCtx)
+		resp, err := l.Shorten(&req)
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {

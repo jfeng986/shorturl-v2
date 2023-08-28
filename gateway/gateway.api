@@ -7,25 +7,18 @@ type ShortenResponse {
 	ShortURL string `json:"short_url"`
 }
 
-type GetOriginalURLRequest {
+type ExpandRequest {
 	ShortURL string `json:"short_url"`
 }
 
-type GetOriginalURLResponse {
+type ExpandResponse {
 	OriginalURL string `json:"original_url"`
 }
 
-type Empty {
-}
-
-service ShortURL {
-	@handler GetShortURL
+service Gateway {
+	@handler Shorten
 	post /shorten(ShortenRequest) returns (ShortenResponse)
 
-	@handler GetOriginalURL
-	post /geturl(GetOriginalURLRequest) returns (GetOriginalURLResponse)
-
-	@handler Redirect
-	get /:alias(Empty) returns (Empty)
-
+	@handler Expand
+	post /expand(ExpandRequest) returns (ExpandResponse)
 }

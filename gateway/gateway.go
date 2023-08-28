@@ -4,15 +4,15 @@ import (
 	"flag"
 	"fmt"
 
-	"shorturl-v2/api/internal/config"
-	"shorturl-v2/api/internal/handler"
-	"shorturl-v2/api/internal/svc"
+	"shorturl-v2/gateway/internal/config"
+	"shorturl-v2/gateway/internal/handler"
+	"shorturl-v2/gateway/internal/svc"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/rest"
 )
 
-var configFile = flag.String("f", "etc/shorturl.yaml", "the config file")
+var configFile = flag.String("f", "etc/gateway.yaml", "the config file")
 
 func main() {
 	flag.Parse()

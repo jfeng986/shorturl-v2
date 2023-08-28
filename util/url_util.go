@@ -6,13 +6,20 @@ import (
 	"errors"
 	"log"
 	"net/url"
+	"strings"
 )
 
 func UrlValidation(urlStr string) error {
+	// Check for spaces in the URL string
+	if strings.Contains(urlStr, " ") {
+		return errors.New("invalid URL: Contains spaces")
+	}
+
 	parsedURL, err := url.Parse(urlStr)
 	if err != nil {
 		return errors.New("invalid URL: " + err.Error())
 	}
+
 	log.Println("parsedUrl:", parsedURL)
 	log.Println("parsedUrl.Scheme:", parsedURL.Scheme)
 	log.Println("parsedUrl.Host:", parsedURL.Host)

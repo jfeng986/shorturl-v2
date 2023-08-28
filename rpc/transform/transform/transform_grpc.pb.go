@@ -19,18 +19,16 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Transformer_GetShortURL_FullMethodName    = "/transform.transformer/GetShortURL"
-	Transformer_GetOriginalURL_FullMethodName = "/transform.transformer/GetOriginalURL"
-	Transformer_Redirect_FullMethodName       = "/transform.transformer/Redirect"
+	Transformer_Shorten_FullMethodName = "/transform.transformer/Shorten"
+	Transformer_Expand_FullMethodName  = "/transform.transformer/Expand"
 )
 
 // TransformerClient is the client API for Transformer service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TransformerClient interface {
-	GetShortURL(ctx context.Context, in *ShortenRequest, opts ...grpc.CallOption) (*ShortenResponse, error)
-	GetOriginalURL(ctx context.Context, in *GetOriginalURLRequest, opts ...grpc.CallOption) (*GetOriginalURLResponse, error)
-	Redirect(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Empty, error)
+	Shorten(ctx context.Context, in *ShortenRequest, opts ...grpc.CallOption) (*ShortenResponse, error)
+	Expand(ctx context.Context, in *ExpandRequest, opts ...grpc.CallOption) (*ExpandResponse, error)
 }
 
 type transformerClient struct {
@@ -41,27 +39,18 @@ func NewTransformerClient(cc grpc.ClientConnInterface) TransformerClient {
 	return &transformerClient{cc}
 }
 
-func (c *transformerClient) GetShortURL(ctx context.Context, in *ShortenRequest, opts ...grpc.CallOption) (*ShortenResponse, error) {
+func (c *transformerClient) Shorten(ctx context.Context, in *ShortenRequest, opts ...grpc.CallOption) (*ShortenResponse, error) {
 	out := new(ShortenResponse)
-	err := c.cc.Invoke(ctx, Transformer_GetShortURL_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, Transformer_Shorten_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *transformerClient) GetOriginalURL(ctx context.Context, in *GetOriginalURLRequest, opts ...grpc.CallOption) (*GetOriginalURLResponse, error) {
-	out := new(GetOriginalURLResponse)
-	err := c.cc.Invoke(ctx, Transformer_GetOriginalURL_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *transformerClient) Redirect(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
-	err := c.cc.Invoke(ctx, Transformer_Redirect_FullMethodName, in, out, opts...)
+func (c *transformerClient) Expand(ctx context.Context, in *ExpandRequest, opts ...grpc.CallOption) (*ExpandResponse, error) {
+	out := new(ExpandResponse)
+	err := c.cc.Invoke(ctx, Transformer_Expand_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -72,9 +61,8 @@ func (c *transformerClient) Redirect(ctx context.Context, in *Empty, opts ...grp
 // All implementations must embed UnimplementedTransformerServer
 // for forward compatibility
 type TransformerServer interface {
-	GetShortURL(context.Context, *ShortenRequest) (*ShortenResponse, error)
-	GetOriginalURL(context.Context, *GetOriginalURLRequest) (*GetOriginalURLResponse, error)
-	Redirect(context.Context, *Empty) (*Empty, error)
+	Shorten(context.Context, *ShortenRequest) (*ShortenResponse, error)
+	Expand(context.Context, *ExpandRequest) (*ExpandResponse, error)
 	mustEmbedUnimplementedTransformerServer()
 }
 
@@ -82,14 +70,11 @@ type TransformerServer interface {
 type UnimplementedTransformerServer struct {
 }
 
-func (UnimplementedTransformerServer) GetShortURL(context.Context, *ShortenRequest) (*ShortenResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetShortURL not implemented")
+func (UnimplementedTransformerServer) Shorten(context.Context, *ShortenRequest) (*ShortenResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Shorten not implemented")
 }
-func (UnimplementedTransformerServer) GetOriginalURL(context.Context, *GetOriginalURLRequest) (*GetOriginalURLResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetOriginalURL not implemented")
-}
-func (UnimplementedTransformerServer) Redirect(context.Context, *Empty) (*Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Redirect not implemented")
+func (UnimplementedTransformerServer) Expand(context.Context, *ExpandRequest) (*ExpandResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Expand not implemented")
 }
 func (UnimplementedTransformerServer) mustEmbedUnimplementedTransformerServer() {}
 
@@ -104,56 +89,38 @@ func RegisterTransformerServer(s grpc.ServiceRegistrar, srv TransformerServer) {
 	s.RegisterService(&Transformer_ServiceDesc, srv)
 }
 
-func _Transformer_GetShortURL_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Transformer_Shorten_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ShortenRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(TransformerServer).GetShortURL(ctx, in)
+		return srv.(TransformerServer).Shorten(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Transformer_GetShortURL_FullMethodName,
+		FullMethod: Transformer_Shorten_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TransformerServer).GetShortURL(ctx, req.(*ShortenRequest))
+		return srv.(TransformerServer).Shorten(ctx, req.(*ShortenRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Transformer_GetOriginalURL_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetOriginalURLRequest)
+func _Transformer_Expand_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ExpandRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(TransformerServer).GetOriginalURL(ctx, in)
+		return srv.(TransformerServer).Expand(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Transformer_GetOriginalURL_FullMethodName,
+		FullMethod: Transformer_Expand_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TransformerServer).GetOriginalURL(ctx, req.(*GetOriginalURLRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Transformer_Redirect_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Empty)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(TransformerServer).Redirect(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Transformer_Redirect_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TransformerServer).Redirect(ctx, req.(*Empty))
+		return srv.(TransformerServer).Expand(ctx, req.(*ExpandRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -166,16 +133,12 @@ var Transformer_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*TransformerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetShortURL",
-			Handler:    _Transformer_GetShortURL_Handler,
+			MethodName: "Shorten",
+			Handler:    _Transformer_Shorten_Handler,
 		},
 		{
-			MethodName: "GetOriginalURL",
-			Handler:    _Transformer_GetOriginalURL_Handler,
-		},
-		{
-			MethodName: "Redirect",
-			Handler:    _Transformer_Redirect_Handler,
+			MethodName: "Expand",
+			Handler:    _Transformer_Expand_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

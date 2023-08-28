@@ -3,9 +3,11 @@ module shorturl-v2
 go 1.21.0
 
 require (
+	github.com/go-redis/redis/v8 v8.11.5
 	github.com/zeromicro/go-zero v1.5.5
 	google.golang.org/grpc v1.57.0
 	google.golang.org/protobuf v1.31.0
+	gopkg.in/ini.v1 v1.67.0
 )
 
 require (
@@ -23,7 +25,6 @@ require (
 	github.com/go-openapi/jsonpointer v0.19.6 // indirect
 	github.com/go-openapi/jsonreference v0.20.1 // indirect
 	github.com/go-openapi/swag v0.22.3 // indirect
-	github.com/go-redis/redis/v8 v8.11.5 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang-jwt/jwt/v4 v4.5.0 // indirect
 	github.com/golang/mock v1.6.0 // indirect

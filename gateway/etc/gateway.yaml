@@ -1,6 +1,6 @@
-Name: ShortURL
+Name: Gateway
 Host: 0.0.0.0
-Port: 8888
+Port: 30000
 Transform:
   Etcd:
     Hosts:

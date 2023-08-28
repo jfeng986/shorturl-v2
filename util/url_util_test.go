@@ -40,4 +40,10 @@ func TestUrlValidation(t *testing.T) {
 	if err == nil {
 		t.Errorf("Expected invalid URL, but got no error")
 	}
+
+	url = "https://go.dev/bdub ubb"
+	err = UrlValidation(url)
+	if err == nil {
+		t.Errorf("Expected invalid URL, but got no error")
+	}
 }

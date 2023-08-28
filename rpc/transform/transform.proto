@@ -13,19 +13,15 @@ message ShortenResponse {
     string ShortURL = 1;
 }
 
-message GetOriginalURLRequest {
+message ExpandRequest {
     string ShortURL = 1;
 }
 
-message GetOriginalURLResponse {
+message ExpandResponse {
     string OriginalURL = 1;
 }
 
-message Empty {
-}
-
 service transformer {
-    rpc GetShortURL(ShortenRequest) returns(ShortenResponse);
-    rpc GetOriginalURL(GetOriginalURLRequest) returns(GetOriginalURLResponse);
-    rpc Redirect(Empty) returns(Empty);
+    rpc Shorten(ShortenRequest) returns(ShortenResponse);
+    rpc Expand(ExpandRequest) returns(ExpandResponse);
 }

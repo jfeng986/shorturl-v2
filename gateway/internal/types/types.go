@@ -10,13 +10,10 @@ type ShortenResponse struct {
 	ShortURL string `json:"short_url"`
 }
 
-type GetOriginalURLRequest struct {
+type ExpandRequest struct {
 	ShortURL string `json:"short_url"`
 }
 
-type GetOriginalURLResponse struct {
+type ExpandResponse struct {
 	OriginalURL string `json:"original_url"`
-}
-
-type Empty struct {
 }

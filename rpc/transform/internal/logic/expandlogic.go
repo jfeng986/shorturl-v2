@@ -9,22 +9,22 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type RedirectLogic struct {
+type ExpandLogic struct {
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 	logx.Logger
 }
 
-func NewRedirectLogic(ctx context.Context, svcCtx *svc.ServiceContext) *RedirectLogic {
-	return &RedirectLogic{
+func NewExpandLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ExpandLogic {
+	return &ExpandLogic{
 		ctx:    ctx,
 		svcCtx: svcCtx,
 		Logger: logx.WithContext(ctx),
 	}
 }
 
-func (l *RedirectLogic) Redirect(in *transform.Empty) (*transform.Empty, error) {
+func (l *ExpandLogic) Expand(in *transform.ExpandRequest) (*transform.ExpandResponse, error) {
 	// todo: add your logic here and delete this line
 
-	return &transform.Empty{}, nil
+	return &transform.ExpandResponse{}, nil
 }

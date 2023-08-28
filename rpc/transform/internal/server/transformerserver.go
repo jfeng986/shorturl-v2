@@ -22,17 +22,12 @@ func NewTransformerServer(svcCtx *svc.ServiceContext) *TransformerServer {
 	}
 }
 
-func (s *TransformerServer) GetShortURL(ctx context.Context, in *transform.ShortenRequest) (*transform.ShortenResponse, error) {
-	l := logic.NewGetShortURLLogic(ctx, s.svcCtx)
-	return l.GetShortURL(in)
+func (s *TransformerServer) Shorten(ctx context.Context, in *transform.ShortenRequest) (*transform.ShortenResponse, error) {
+	l := logic.NewShortenLogic(ctx, s.svcCtx)
+	return l.Shorten(in)
 }
 
-func (s *TransformerServer) GetOriginalURL(ctx context.Context, in *transform.GetOriginalURLRequest) (*transform.GetOriginalURLResponse, error) {
-	l := logic.NewGetOriginalURLLogic(ctx, s.svcCtx)
-	return l.GetOriginalURL(in)
-}
-
-func (s *TransformerServer) Redirect(ctx context.Context, in *transform.Empty) (*transform.Empty, error) {
-	l := logic.NewRedirectLogic(ctx, s.svcCtx)
-	return l.Redirect(in)
+func (s *TransformerServer) Expand(ctx context.Context, in *transform.ExpandRequest) (*transform.ExpandResponse, error) {
+	l := logic.NewExpandLogic(ctx, s.svcCtx)
+	return l.Expand(in)
 }

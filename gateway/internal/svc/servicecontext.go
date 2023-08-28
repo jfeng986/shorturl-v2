@@ -1,7 +1,7 @@
 package svc
 
 import (
-	"shorturl-v2/api/internal/config"
+	"shorturl-v2/gateway/internal/config"
 	"shorturl-v2/rpc/transform/transformer"
 
 	"github.com/zeromicro/go-zero/zrpc"
