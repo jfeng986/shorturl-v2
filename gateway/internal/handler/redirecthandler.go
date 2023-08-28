@@ -20,10 +20,12 @@ func RedirectHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 
 		l := logic.NewRedirectLogic(r.Context(), svcCtx)
 		resp, err := l.Redirect(&req)
+		url := resp.OriginalURL
+
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {
-			httpx.OkJsonCtx(r.Context(), w, resp)
+			http.Redirect(w, r, url, http.StatusFound)
 		}
 	}
 }
