@@ -16,7 +16,6 @@ func TestUrlValidation(t *testing.T) {
 		{"https://ss-link.netlify.app/", false},
 		{"https://www.google.com/search?q=calculator&oq=&aqs=chrome.1.69i57j69i59j69i65j69i60l3j69i65l2.1071j0j4&sourceid=chrome&ie=UTF-8", false},
 
-		// 以下是无效的 URL 用例
 		{"", true},                           // empty string
 		{"http", true},                       // lack of '//'
 		{"http://", true},                    // lack of host
