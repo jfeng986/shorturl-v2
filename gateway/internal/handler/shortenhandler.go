@@ -17,7 +17,6 @@ func ShortenHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
-
 		l := logic.NewShortenLogic(r.Context(), svcCtx)
 		resp, err := l.Shorten(&req)
 		if err != nil {

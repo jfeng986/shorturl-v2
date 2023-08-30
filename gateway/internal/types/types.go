@@ -25,3 +25,11 @@ type RedirectRequest struct {
 type RedirectResponse struct {
 	OriginalURL string `json:"original_url"`
 }
+
+type QrCodeRequest struct {
+	URL string `json:"url"`
+}
+
+type QrCodeResponse struct {
+	Qrcode string `json:"qr_code"`
+}

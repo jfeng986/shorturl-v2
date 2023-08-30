@@ -23,6 +23,14 @@ type RedirectResponse {
 	OriginalURL string `json:"original_url"`
 }
 
+type QrCodeRequest {
+	URL string `json:"url"`
+}
+
+type QrCodeResponse {
+	Qrcode string `json:"qr_code"`
+}
+
 service Gateway {
 	@handler Shorten
 	post /shorten(ShortenRequest) returns (ShortenResponse)
@@ -32,4 +40,7 @@ service Gateway {
 
 	@handler Redirect
 	get /:alias(RedirectRequest) returns (RedirectResponse)
+
+	@handler GenQrcode
+	post /qrcode(QrCodeRequest) returns (QrCodeResponse)
 }

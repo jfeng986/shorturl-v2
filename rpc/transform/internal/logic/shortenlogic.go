@@ -42,10 +42,6 @@ func (l *ShortenLogic) Shorten(in *transform.ShortenRequest) (*transform.Shorten
 		alias = customAlias
 	}
 	shortUrl := "http://127.0.0.1:30000/" + alias
-	err = util.UrlValidation(shortUrl)
-	if err != nil {
-		return nil, err
-	}
 	parsedShortUrl, err := url.Parse(shortUrl)
 	if err != nil {
 		return nil, err

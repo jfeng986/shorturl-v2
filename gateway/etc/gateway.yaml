@@ -6,3 +6,9 @@ Transform:
     Hosts:
       - localhost:2379
     Key: transform.rpc
+
+Qrcode:
+  Etcd:
+    Hosts:
+      - localhost:2379
+    Key: qrcode.rpc

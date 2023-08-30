@@ -32,7 +32,6 @@ func (l *ShortenLogic) Shorten(req *types.ShortenRequest) (*types.ShortenRespons
 	if err != nil {
 		return nil, err
 	}
-
 	return &types.ShortenResponse{
 		ShortURL: resp.ShortURL,
 	}, nil

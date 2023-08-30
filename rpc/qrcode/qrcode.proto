@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package qrcode;
+option go_package="./qrcode";
+
+message QrcodeRequest {
+  string URL = 1;
+}
+
+message QrcodeResponse {
+  string QrcodeData = 1;
+}
+
+service Qrcoder {
+  rpc GenQrcode (QrcodeRequest) returns (QrcodeResponse);
+}
