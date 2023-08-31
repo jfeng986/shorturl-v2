@@ -2,5 +2,5 @@ Name: qrcode.rpc
 ListenOn: 0.0.0.0:30002
 Etcd:
   Hosts:
-    - 127.0.0.1:2379
+    - etcd:2379
   Key: qrcode.rpc

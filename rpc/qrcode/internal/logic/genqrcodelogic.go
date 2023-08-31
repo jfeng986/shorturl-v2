@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/base64"
 	"os"
+	"strings"
 
 	"shorturl-v2/rpc/qrcode/internal/svc"
 	"shorturl-v2/rpc/qrcode/qrcode"
@@ -32,17 +33,19 @@ func (l *GenQrcodeLogic) GenQrcode(in *qrcode.QrcodeRequest) (*qrcode.QrcodeResp
 	if err != nil {
 		return nil, err
 	}
-	filename := "qr.png"
+	filename := content + ".png"
+	filename = strings.ReplaceAll(filename, "/", "")
 	err = util.GenerateQRCode(content, util.Medium, 256, filename)
 	if err != nil {
 		return nil, err
 	}
-	imageData, err := os.ReadFile("qr.png")
+	imageData, err := os.ReadFile(filename)
 	if err != nil {
 		return nil, err
 	}
+	logx.Info("imageData:", imageData)
 	base64Str := base64.StdEncoding.EncodeToString(imageData)
-
+	os.Remove(filename)
 	resp := &qrcode.QrcodeResponse{
 		QrcodeData: base64Str,
 	}

@@ -4,11 +4,11 @@ Port: 30000
 Transform:
   Etcd:
     Hosts:
-      - localhost:2379
+      - etcd:2379
     Key: transform.rpc
 
 Qrcode:
   Etcd:
     Hosts:
-      - localhost:2379
+      - etcd:2379
     Key: qrcode.rpc

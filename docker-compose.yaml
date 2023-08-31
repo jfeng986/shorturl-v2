@@ -1,0 +1,81 @@
+version: "3"
+services:
+  gateway:
+    image: gateway:latest
+    container_name: gateway
+    build:
+      context: .
+      dockerfile: gateway/Dockerfile
+    ports:
+      - "30000:30000"
+    depends_on:
+      - qrcode
+      - transform
+      - etcd
+    networks:
+      - shorturl-network
+
+  transform:
+    image: transform:latest
+    container_name: transform
+    build:
+      context: .
+      dockerfile: rpc/transform/Dockerfile
+    ports:
+      - "30001:30001"
+    depends_on:
+      - etcd
+      - redis
+    networks:
+      - shorturl-network
+
+  qrcode:
+    image: qrcode:latest
+    container_name: qrcode
+    build:
+      context: .
+      dockerfile: rpc/qrcode/Dockerfile
+    ports:
+      - "30002:30002"
+    depends_on:
+      - etcd
+    networks:
+      - shorturl-network
+
+  redis:
+    image: redis
+    container_name: db-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - shorturl-network
+
+  etcd:
+    image: bitnami/etcd:latest
+    container_name: bitnami-etcd
+    ports:
+      - "2379:2379"
+    environment:
+      - ALLOW_NONE_AUTHENTICATION=yes
+      - ETCD_ADVERTISE_CLIENT_URLS=http://localhost:2379
+    networks:
+      - shorturl-network
+
+  web:
+    container_name: web
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    volumes:
+      - ./web:/app
+      - /app/node_modules
+    ports:
+      - "5173:80"
+    environment:
+      - VITE_API_HOST=gateway
+      - VITE_PORT=30000
+    restart: always
+
+networks:
+  shorturl-network:
+    driver: bridge

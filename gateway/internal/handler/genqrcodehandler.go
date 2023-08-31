@@ -2,11 +2,11 @@ package handler
 
 import (
 	"net/http"
-
-	"github.com/zeromicro/go-zero/rest/httpx"
 	"shorturl-v2/gateway/internal/logic"
 	"shorturl-v2/gateway/internal/svc"
 	"shorturl-v2/gateway/internal/types"
+
+	"github.com/zeromicro/go-zero/rest/httpx"
 )
 
 func GenQrcodeHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {

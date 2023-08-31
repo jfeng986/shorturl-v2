@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/url"
 
-	"shorturl-v2/rpc/transform/internal/cache"
+	"shorturl-v2/rpc/transform/internal/db"
 	"shorturl-v2/rpc/transform/internal/svc"
 	"shorturl-v2/rpc/transform/transform"
 	"shorturl-v2/util"
@@ -47,7 +47,7 @@ func (l *ShortenLogic) Shorten(in *transform.ShortenRequest) (*transform.Shorten
 		return nil, err
 	}
 	log.Println("parsedUrl:", parsedShortUrl)
-	cache.Put([]byte(shortUrl), []byte(originalUrl))
+	db.Put([]byte(shortUrl), []byte(originalUrl))
 	resp := &transform.ShortenResponse{
 		ShortURL: shortUrl,
 	}

@@ -1,4 +1,4 @@
-package cache
+package db
 
 import (
 	"context"
@@ -16,7 +16,7 @@ var (
 )
 
 func init() {
-	file, err := ini.Load("./internal/cache/config.ini")
+	file, err := ini.Load("./internal/db/config.ini")
 	if err != nil {
 		log.Println("Configuration file reading error. Please check the file path: ", err)
 		log.Println(err)

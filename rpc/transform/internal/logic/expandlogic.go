@@ -5,7 +5,7 @@ import (
 	"errors"
 	"log"
 
-	"shorturl-v2/rpc/transform/internal/cache"
+	cache "shorturl-v2/rpc/transform/internal/db"
 	"shorturl-v2/rpc/transform/internal/svc"
 	"shorturl-v2/rpc/transform/transform"
 
