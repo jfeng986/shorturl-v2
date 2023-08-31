@@ -2,8 +2,6 @@ package logic
 
 import (
 	"context"
-	"log"
-	"net/url"
 
 	"shorturl-v2/rpc/transform/internal/db"
 	"shorturl-v2/rpc/transform/internal/svc"
@@ -34,7 +32,6 @@ func (l *ShortenLogic) Shorten(in *transform.ShortenRequest) (*transform.Shorten
 	if err != nil {
 		return nil, err
 	}
-
 	var alias string
 	if customAlias == "" {
 		alias = util.HashUrl(originalUrl)
@@ -42,11 +39,6 @@ func (l *ShortenLogic) Shorten(in *transform.ShortenRequest) (*transform.Shorten
 		alias = customAlias
 	}
 	shortUrl := "http://127.0.0.1:30000/" + alias
-	parsedShortUrl, err := url.Parse(shortUrl)
-	if err != nil {
-		return nil, err
-	}
-	log.Println("parsedUrl:", parsedShortUrl)
 	db.Put([]byte(shortUrl), []byte(originalUrl))
 	resp := &transform.ShortenResponse{
 		ShortURL: shortUrl,

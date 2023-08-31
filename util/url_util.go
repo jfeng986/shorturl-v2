@@ -4,7 +4,6 @@ import (
 	"crypto/sha1"
 	"encoding/base64"
 	"errors"
-	"log"
 	"net/url"
 	"regexp"
 	"strings"
@@ -18,9 +17,6 @@ func UrlValidation(urlStr string) error {
 	if err != nil {
 		return errors.New("invalid URL: " + err.Error())
 	}
-	log.Println("parsedUrl:", parsedURL)
-	log.Println("parsedUrl.Scheme:", parsedURL.Scheme)
-	log.Println("parsedUrl.Host:", parsedURL.Host)
 
 	// Check Scheme
 	if parsedURL.Scheme != "http" && parsedURL.Scheme != "https" {

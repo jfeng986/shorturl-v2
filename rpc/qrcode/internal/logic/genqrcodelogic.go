@@ -43,7 +43,6 @@ func (l *GenQrcodeLogic) GenQrcode(in *qrcode.QrcodeRequest) (*qrcode.QrcodeResp
 	if err != nil {
 		return nil, err
 	}
-	logx.Info("imageData:", imageData)
 	base64Str := base64.StdEncoding.EncodeToString(imageData)
 	os.Remove(filename)
 	resp := &qrcode.QrcodeResponse{

@@ -187,7 +187,7 @@ export default function ShortenURLForm() {
                 onClick={downloadQRCode}
                 className="py-1 px-4 bg-gray-500 text-white rounded w-28"
               >
-                download
+                Download
               </button>
               <button
                 onClick={toggleModal}

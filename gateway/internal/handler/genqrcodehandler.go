@@ -2,6 +2,7 @@ package handler
 
 import (
 	"net/http"
+
 	"shorturl-v2/gateway/internal/logic"
 	"shorturl-v2/gateway/internal/svc"
 	"shorturl-v2/gateway/internal/types"
@@ -16,7 +17,6 @@ func GenQrcodeHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
-
 		l := logic.NewGenQrcodeLogic(r.Context(), svcCtx)
 		resp, err := l.GenQrcode(&req)
 		if err != nil {
