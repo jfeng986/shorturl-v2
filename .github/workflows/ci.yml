@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Compose
+        run: sudo apt-get install docker-compose
+
+      - name: Set up Golang
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.21
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+  docker:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build Docker Compose services
+        run: docker-compose build
+
+      - name: Run Docker Compose services
+        run: docker-compose up -d
+
+      - name: Run Golang Tests
+        run: go test -v ./...
+
+      - name: Stop Docker Compose services
+        run: docker-compose down
+
+  web:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    env:
+      API_HOST: gateway
+      PORT: 30000
+    steps:
+      - uses: actions/checkout@v3
+        name: Checkout repository master branch
+
+      - uses: actions/setup-node@v3
+        name: Setup Node Environment
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
