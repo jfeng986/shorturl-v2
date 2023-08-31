@@ -2,7 +2,5 @@ wrk.lua
 gateway/tmp
 rpc/transform/tmp
 rpc/qrcoder/tmp
-db/config.ini
-rpc/transform/internal/db/config.ini
 util/test_qr.png
 rpc/qrcode/qr.png
