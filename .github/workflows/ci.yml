@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, dev]
   pull_request:
     branches: [main]
 
@@ -26,8 +26,13 @@ jobs:
 
       - name: Check Containers are Healthy
         run: |
+          sleep 60
           docker ps
           docker-compose ps
+          if docker ps | grep "unhealthy"; then
+            echo "Some containers are unhealthy"
+            exit 1
+          fi
 
       - name: Teardown
         run: docker-compose down
