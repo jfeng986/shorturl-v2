@@ -39,7 +39,7 @@ jobs:
             echo "ALLOWED_ORIGIN=${{ secrets.ALLOWED_ORIGIN }}" > .env
             cd ../
             cd web
-            echo "VITE_API_HOST=${{ secrets.VITE_API_HOST }}\n" > .env
+
             cd ../
             sudo docker compose down
 
