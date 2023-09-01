@@ -26,9 +26,9 @@ jobs:
       - name: Build and push Docker image
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.DEPLOY_HOST }}
+          host: "${{ secrets.DEPLOY_HOST }}"
           username: ubuntu
-          key: ${{ secrets.DEPLOY_PRIVATE_KEY }}
+          key: "${{ secrets.DEPLOY_PRIVATE_KEY }}"
           command_timeout: 20m
           script: |
             mkdir -p ~/workspace
