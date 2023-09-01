@@ -4,6 +4,7 @@ go 1.21.0
 
 require (
 	github.com/go-redis/redis/v8 v8.11.5
+	github.com/joho/godotenv v1.5.1
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
 	github.com/zeromicro/go-zero v1.5.5
 	google.golang.org/grpc v1.57.0

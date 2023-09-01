@@ -12,7 +12,6 @@ RUN sh -c "[ -f go.mod ]" || exit
 COPY gateway/etc /app/etc
 RUN go build -ldflags="-s -w" -o /app/gateway gateway/gateway.go
 
-
 FROM alpine
 
 RUN echo -e http://mirrors.ustc.edu.cn/alpine/v3.13/main/ > /etc/apk/repositories

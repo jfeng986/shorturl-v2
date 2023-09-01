@@ -6,6 +6,8 @@ services:
     build:
       context: .
       dockerfile: gateway/Dockerfile
+    env_file:
+      - gateway/.env
     ports:
       - "30000:30000"
     depends_on:
