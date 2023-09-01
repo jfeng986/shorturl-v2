@@ -17,12 +17,6 @@ import (
 
 var configFile = flag.String("f", "etc/gateway.yaml", "the config file")
 
-func init() {
-	if err := godotenv.Load(); err != nil {
-		panic("No .env file found")
-	}
-}
-
 func main() {
 	flag.Parse()
 
@@ -44,6 +38,15 @@ func main() {
 
 func corsMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		cwd, err := os.Getwd()
+		if err != nil {
+			fmt.Println("Error fetching current directory:", err)
+		} else {
+			fmt.Println("Current directory:", cwd)
+		}
+		if err := godotenv.Load(); err != nil {
+			panic("No .env file found")
+		}
 		allowedOrigin := os.Getenv("ALLOWED_ORIGIN")
 		w.Header().Set("Access-Control-Allow-Origin", allowedOrigin)
 		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
