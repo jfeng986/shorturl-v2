@@ -1,102 +1,47 @@
-version: "3"
-services:
-  gateway:
-    image: gateway:latest
-    container_name: gateway
-    build:
-      context: .
-      dockerfile: gateway/Dockerfile
-    env_file:
-      - gateway/.env
-    ports:
-      - "30000:30000"
-    depends_on:
-      qrcode:
-        condition: service_started
-      transform:
-        condition: service_started
-      etcd:
-        condition: service_healthy
-    networks:
-      - shorturl-network
+name: CICD
 
-  transform:
-    image: transform:latest
-    container_name: transform
-    build:
-      context: .
-      dockerfile: rpc/transform/Dockerfile
-    ports:
-      - "30001:30001"
-    depends_on:
-      etcd:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-    networks:
-      - shorturl-network
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main]
 
-  qrcode:
-    image: qrcode:latest
-    container_name: qrcode
-    build:
-      context: .
-      dockerfile: rpc/qrcode/Dockerfile
-    ports:
-      - "30002:30002"
-    depends_on:
-      etcd:
-        condition: service_healthy
-    networks:
-      - shorturl-network
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-  redis:
-    image: redis
-    container_name: db-redis
-    restart: always
-    ports:
-      - "6379:6379"
-    networks:
-      - shorturl-network
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-  etcd:
-    image: bitnami/etcd:latest
-    container_name: bitnami-etcd
-    restart: always
-    ports:
-      - "2379:2379"
-    environment:
-      - ALLOW_NONE_AUTHENTICATION=yes
-      - ETCD_ADVERTISE_CLIENT_URLS=http://localhost:2379
-    networks:
-      - shorturl-network
-    healthcheck:
-      test: ["CMD", "etcdctl", "endpoint", "health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
-  web:
-    image: web:latest
-    container_name: web
-    build:
-      context: ./web
-      dockerfile: Dockerfile
-    volumes:
-      - ./web:/app
-      - /app/node_modules
-    ports:
-      - "80:80"
-    environment:
-      - VITE_API_HOST=gateway
-      - VITE_PORT=30000
-    restart: always
-
-networks:
-  shorturl-network:
-    driver: bridge
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [setup]
+    steps:
+      - name: Build and push Docker image
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ubuntu
+          key: ${{ secrets.DEPLOY_PRIVATE_KEY }}
+          command_timeout: 20m
+          script: |
+            mkdir -p ~/workspace
+            cd ~/workspace/
+            rm -rf ./shorturl
+            git clone --depth=1 git@github.com:jfeng986/shorturl-v2.git shorturl
+            cd shorturl/gateway
+            echo "ALLOWED_ORIGIN=${{ secrets.ALLOWED_ORIGIN }}" > .env
+            cd ../
+            sudo docker compose down
+            sudo docker rmi gateway
+            sudo docker rmi transform
+            sudo docker rmi qrcode
+            sudo docker rmi web
+            sudo docker compose build --no-cache --compress
+            sudo docker compose up -d

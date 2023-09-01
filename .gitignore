@@ -6,3 +6,4 @@ util/test_qr.png
 rpc/qrcode/qr.png
 shorturl-server-key.pem
 gateway/.env
+web/.env
