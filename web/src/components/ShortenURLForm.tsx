@@ -79,7 +79,7 @@ export default function ShortenURLForm() {
       <h2 className="flex pb-6 justify-center text-sm text-gray-300">
         <p className="max-w-2xl text-center">
           Shorturl.life is a free URL shortener and QR code generator tool.
-          Create your own short links and QR Codes in seconds.
+          Create your own short links and QR Codes in seconds. TEST
         </p>
       </h2>
       <div className="flex justify-center">

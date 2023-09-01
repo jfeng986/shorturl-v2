@@ -1,15 +1,14 @@
-name: CI
+name: CICD
 
 on:
   push:
-    branches: [main]
+    branches: [main, dev]
   pull_request:
     branches: [main]
 
 jobs:
-  build:
+  setup:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -19,15 +18,24 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Build and run Docker Compose
-        run: |
-          docker-compose up -d
-
-      - name: Check Containers are Healthy
-        run: |
-          docker ps
-          docker-compose ps
-
-      - name: Teardown
-        run: docker-compose down
+  
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [setup]
+    steps:
+      - name: Build and push Docker image
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ubuntu
+          key: ${{ secrets.DEPLOY_PRIVATE_KEY }}
+          command_timeout: 20m
+          script: |
+            mkdir -p ~/workspace
+            cd ~/workspace/
+            rm -rf ./shorturl
+            git clone --depth=1 git@github.com:jfeng986/shorturl-v2.git shorturl
+            cd shorturl
+            sudo docker compose down
+            sudo docker compose build --no-cache --compress
+            sudo docker compose up -d
