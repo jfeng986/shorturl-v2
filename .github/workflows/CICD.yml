@@ -40,7 +40,6 @@ jobs:
             cd ../
             cd web
             echo "VITE_API_HOST=${{ secrets.VITE_API_HOST }}\n" > .env
-            echo "VITE_PORT=${{ secrets.VITE_PORT }}" >> .env
             cd ../
             sudo docker compose down
 
