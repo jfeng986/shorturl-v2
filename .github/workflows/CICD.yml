@@ -30,19 +30,3 @@ jobs:
           username: ubuntu
           key: ${{ secrets.DEPLOY_PRIVATE_KEY }}
           command_timeout: 20m
-          script: |
-            mkdir -p ~/workspace
-            cd ~/workspace/
-            rm -rf ./shorturl
-            git clone --depth=1 git@github.com:jfeng986/shorturl-v2.git shorturl
-            cd shorturl/gateway
-            echo "ALLOWED_ORIGIN=${{ secrets.ALLOWED_ORIGIN }}" > .env
-            cd ../
-            cd web
-            echo "VITE_API_HOST=${{ secrets.VITE_API_HOST }}\n" > .env
-            echo "VITE_PORT=${{ secrets.VITE_PORT }}\n" >> .env
-            cd ../
-            sudo docker compose down
-
-            sudo docker compose build --no-cache --compress
-            sudo docker compose up -d
