@@ -3,6 +3,7 @@ services:
   gateway:
     image: gateway:latest
     container_name: gateway
+    network_mode: "host"
     build:
       context: .
       dockerfile: gateway/Dockerfile
@@ -23,6 +24,7 @@ services:
   transform:
     image: transform:latest
     container_name: transform
+    network_mode: "host"
     build:
       context: .
       dockerfile: rpc/transform/Dockerfile
@@ -39,6 +41,7 @@ services:
   qrcode:
     image: qrcode:latest
     container_name: qrcode
+    network_mode: "host"
     build:
       context: .
       dockerfile: rpc/qrcode/Dockerfile
