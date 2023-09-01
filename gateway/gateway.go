@@ -29,6 +29,7 @@ func main() {
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
 
+	// server := rest.MustNewServer(c.RestConf)
 	server := rest.MustNewServer(c.RestConf)
 	server.Use(corsMiddleware)
 
@@ -45,9 +46,10 @@ func corsMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		allowedOrigin := os.Getenv("ALLOWED_ORIGIN")
 		w.Header().Set("Access-Control-Allow-Origin", allowedOrigin)
-		w.Header().Set("Access-Control-Allow-Methods", "POST, GET")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
 		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
 			return
 		}
 		next(w, r)
