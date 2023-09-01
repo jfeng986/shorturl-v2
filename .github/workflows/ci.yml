@@ -44,7 +44,7 @@ jobs:
       - uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.DEPLOY_HOST }}
-          username: root
+          username: ubuntu
           key: ${{ secrets.DEPLOY_PRIVATE_KEY }}
           script: |
             mkdir -p ~/workspace
@@ -52,6 +52,6 @@ jobs:
             rm -rf ./shorturl
             git clone --depth=1 git@github.com:jfeng986/shorturl-v2.git shorturl
             cd shorturl
-            docker compose down
-            docker compose build --no-cache --compress
-            docker compose up -d
+            sudo docker compose down
+            sudo docker compose build --no-cache --compress
+            sudo docker compose up -d
