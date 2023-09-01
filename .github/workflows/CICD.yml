@@ -38,10 +38,7 @@ jobs:
             cd shorturl/gateway
             echo "ALLOWED_ORIGIN=${{ secrets.ALLOWED_ORIGIN }}" > .env
             cd ../
-            cd web
-            echo "VITE_API_HOST=${{ secrets.VITE_API_HOST }}\n" > .env
-            echo "VITE_API_PORT=${{ secrets.VITE_PORT }}\n" >> .env
-            cd ../
+
             sudo docker compose down
 
             sudo docker compose build --no-cache --compress
