@@ -80,6 +80,7 @@ services:
       retries: 3
 
   web:
+    image: web:latest
     container_name: web
     build:
       context: ./web

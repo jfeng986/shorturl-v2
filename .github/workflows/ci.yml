@@ -18,7 +18,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-  
+
   deploy:
     runs-on: ubuntu-latest
     needs: [setup]
@@ -37,5 +37,9 @@ jobs:
             git clone --depth=1 git@github.com:jfeng986/shorturl-v2.git shorturl
             cd shorturl
             sudo docker compose down
+            sudo docker rmi shorturl-v2-web
+            sudo docker rmi gateway:latest
+            sudo docker rmi transform:latest
+            sudo docker rmi qrcode:latest
             sudo docker compose build --no-cache --compress
             sudo docker compose up -d
