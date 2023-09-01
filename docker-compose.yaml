@@ -1,5 +1,7 @@
 name: CICD
 
+version: "3"
+
 on:
   push:
     branches: [main, dev]

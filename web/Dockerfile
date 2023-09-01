@@ -1,6 +1,5 @@
 
 FROM node:18 as build-stage
-
 WORKDIR /app
 COPY ./nginx.conf /nginx.conf
 COPY package*.json /app/
