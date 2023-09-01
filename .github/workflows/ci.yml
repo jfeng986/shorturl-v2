@@ -35,7 +35,9 @@ jobs:
             cd ~/workspace/
             rm -rf ./shorturl
             git clone --depth=1 git@github.com:jfeng986/shorturl-v2.git shorturl
-            cd shorturl
+            cd shorturl/gateway
+            echo "ALLOWED_ORIGIN=${{ secrets.ALLOWED_ORIGIN }}" > .env
+            cd ../
             sudo docker compose down
             sudo docker rmi gateway
             sudo docker rmi transform
